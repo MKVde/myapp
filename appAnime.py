@@ -9,7 +9,7 @@ def run_script(url, provider):
         response = requests.get(url)
         response.raise_for_status()
     except requests.exceptions.RequestException:
-        st.warning("No URL or Invalid URL. Please enter a valid URL.")
+        st.warning("No URL or Invalid URL. Please enter a valid URL PLZ PLZ PLZ PLZ.")
         return
 
     # Show loading spinner
