@@ -9,11 +9,8 @@ def run_script(url, provider):
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         }
-        scraper = cfscrape.create_scraper() # Use cfscrape to bypass Cloudflare
-        response = scraper.get(url, headers=headers)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
-        print(f"Status Code: {response.status_code}") # Print the status code
-        st.warning(f"Status Code: {response.status_code}") # Print the status code
     except requests.exceptions.RequestException:
         st.warning("No URL or Invalid URL. Please enter a valid URL.")
         return
