@@ -33,6 +33,7 @@ def run_script(url, provider):
 
         # Extract anime name from URL
         anime_name = url.split('/')[-2].replace('-', ' ')
+        st.warning(f"Status Code: ok")
 
         # Loop through each episode URL and create a card for each
         cards = []
@@ -41,7 +42,7 @@ def run_script(url, provider):
 
             # Make a GET request to the episode page
             try:
-                time.sleep(10)
+                time.sleep(1)
                 response = requests.get(episode_url)
                 response.raise_for_status()
             except requests.exceptions.RequestException:
