@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
-import time
+# import time
 
 # Define the CSP
 csp = """
@@ -42,7 +42,7 @@ def run_script(url, provider):
 
             # Make a GET request to the episode page
             try:
-                time.sleep(1)
+#                 time.sleep(1)
                 response = requests.get(episode_url)
                 response.raise_for_status()
             except requests.exceptions.RequestException:
