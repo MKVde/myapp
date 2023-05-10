@@ -8,6 +8,20 @@ csp = """
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
 """
 
+#Define the Streamlit app
+def app():
+    st.set_page_config(page_title="Anime Downloader", page_icon="🎬")
+    st.title("Anime Downloader")
+    # Show input field for URL
+    url = st.text_input("Enter the URL of the anime you want to download:")
+
+    # Show radio buttons for provider selection
+    provider = st.radio("Select the provider:", ["mega", "google", "mediafire"])
+
+    # Show button to start downloading
+    if st.button("Download Episodes"):
+        run_script(url, provider)
+
 
 def run_script(url, provider):
     # Check that URL is valid
@@ -74,19 +88,6 @@ def run_script(url, provider):
         st.markdown(csp + ' '.join(cards), unsafe_allow_html=True)
 
 
-#Define the Streamlit app
-def app():
-    st.set_page_config(page_title="Anime Downloader", page_icon="🎬")
-    st.title("Anime Downloader")
-    # Show input field for URL
-    url = st.text_input("Enter the URL of the anime you want to download:")
-
-    # Show radio buttons for provider selection
-    provider = st.radio("Select the provider:", ["mega", "google", "mediafire"])
-
-    # Show button to start downloading
-    if st.button("Download Episodes"):
-        run_script(url, provider)
 
 
 
