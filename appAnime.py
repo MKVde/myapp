@@ -1,12 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
-import time
 
 # Define the CSP
 csp = """
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
 """
+
 
 def run_script(url, provider):
     # Check that URL is valid
@@ -35,7 +35,6 @@ def run_script(url, provider):
         cards = []
         for episode_link in episode_links:
             episode_url = episode_link["href"]
-            time.sleep(1)
 
             # Make a GET request to the episode page
             try:
