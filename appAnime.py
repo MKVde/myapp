@@ -1,20 +1,18 @@
+import cfscrape
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
 
-
 def run_script(url, provider):
     # Check that URL is valid
-
     try:
-        response = requests.get(url)
+        scraper = cfscrape.create_scraper()
+        response = scraper.get(url)
         response.raise_for_status()
-        print(f"Status Code: {response.status_code}") # Print the status code
-        st.warning(f"Status Code: {response.status_code}") # Print the status code
     except requests.exceptions.RequestException:
         st.warning("No URL or Invalid URL. Please enter a valid URL.")
         return
-    
+
     # Show loading spinner
     with st.spinner(text="Loading..."):
         # Use BeautifulSoup to parse the response HTML
@@ -38,7 +36,7 @@ def run_script(url, provider):
 
             # Make a GET request to the episode page
             try:
-                response = requests.get(episode_url)
+                response = scraper.get(episode_url)
                 response.raise_for_status()
             except requests.exceptions.RequestException:
                 st.warning("Failed to retrieve episode data. Please check your internet connection and try again.")
@@ -54,7 +52,7 @@ def run_script(url, provider):
             if len(provider_links) >= 2:
                 download_link = provider_links[1]['href']
                 episode_num = episode_link.text.split(' ')[-1]
-                
+
                 # Add the row to the table
                 st.write(f"| {episode_num} | [{provider.capitalize()}]({download_link}) |")
 
