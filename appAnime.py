@@ -5,12 +5,9 @@ import streamlit as st
 
 def run_script(url, provider):
     # Check that URL is valid
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-    except requests.exceptions.RequestException:
-        st.warning("No URL or Invalid URL. Please enter a valid URL PLZ PLZ PLZ PLZ.")
-        return
+
+    response = requests.get(url)
+
 
     # Show loading spinner
     with st.spinner(text="Loading..."):
