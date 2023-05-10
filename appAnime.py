@@ -3,6 +3,11 @@ from bs4 import BeautifulSoup
 import streamlit as st
 import time
 
+# Define the CSP
+csp = """
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+"""
+
 def run_script(url, provider):
     # Check that URL is valid
     try:
@@ -30,7 +35,7 @@ def run_script(url, provider):
         cards = []
         for episode_link in episode_links:
             episode_url = episode_link["href"]
-            time.sleep(10)
+            time.sleep(1)
 
             # Make a GET request to the episode page
             try:
@@ -66,16 +71,24 @@ def run_script(url, provider):
                 cards.append(card)
 
         # Show the cards in Streamlit
-        st.markdown(' '.join(cards), unsafe_allow_html=True)
+        st.markdown(csp + ' '.join(cards), unsafe_allow_html=True)
 
-# Create Streamlit UI
-st.set_page_config(page_title="Anime Downloader", page_icon="📺")
-st.title("Anime Downloader")
+#Define the Streamlit app
+def app():
+    st.set_page_config(page_title="Anime Downloader", page_icon="🎬")
+    st.title("Anime Downloader")
+    # Show input field for URL
+    url = st.text_input("Enter the URL of the anime you want to download:")
 
-# Get user input values
-url = st.text_input("Enter URL:")
-provider = st.selectbox("Provider:", ["mega", "google", "mediafire"])
+    # Show radio buttons for provider selection
+    provider = st.radio("Select the provider:", ["mega", "google", "mediafire"])
 
-# Run the script when the "Download" button is clicked
-if st.button("Download Episodes"):
-    run_script(url, provider)
+    # Show button to start downloading
+    if st.button("Download Episodes"):
+        run_script(url, provider)
+
+
+
+if __name__ == "__main__":
+    app()
+
