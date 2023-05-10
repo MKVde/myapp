@@ -6,7 +6,7 @@ import time
 def run_script(url, provider):
     # Check that URL is valid
     try:
-        response = requests.get(url)
+        response = requests.get(url, headers={'Cache-Control': 'no-cache'})
         response.raise_for_status()
     except requests.exceptions.RequestException:
         st.warning("No URL or Invalid URL. Please enter a valid URL.")
@@ -27,7 +27,7 @@ def run_script(url, provider):
         cards = []
         for episode_link in episode_links:
             episode_url = episode_link["href"]
-            time.sleep(40)
+            time.sleep(10)
 
             # Make a GET request to the episode page
             try:
