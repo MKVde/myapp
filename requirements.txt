@@ -1,4 +1,4 @@
-selenium==4.9.1
+beautifulsoup4==4.12.2
+cfscrape==2.1.1
+Requests==2.30.0
 streamlit==1.22.0
-undetected_chromedriver==2.1.0
-webdriver_manager==3.8.6
