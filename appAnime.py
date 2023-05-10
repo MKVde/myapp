@@ -13,7 +13,7 @@ def run_script(url, provider):
     # Check that URL is valid
     try:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.92 Safari/537.36"
         }
         response = requests.get(url, headers=headers)
         print(f"Status Code: {response.status_code}") # Print the status code
@@ -33,7 +33,7 @@ def run_script(url, provider):
 
         # Extract anime name from URL
         anime_name = url.split('/')[-2].replace('-', ' ')
-        st.warning(f"Status Code: ok")
+        st.warning("Status Code: ok")
 
         # Loop through each episode URL and create a card for each
         cards = []
@@ -41,13 +41,9 @@ def run_script(url, provider):
             episode_url = episode_link["href"]
 
             # Make a GET request to the episode page
-            try:
-#                 time.sleep(1)
-                response = requests.get(episode_url)
-                response.raise_for_status()
-            except requests.exceptions.RequestException:
-                st.warning("Failed to retrieve episode data. Please check your internet connection and try again.")
-                return
+            response = requests.get(episode_url)
+            print(response.text) # Print the HTML content of the response
+            response.raise_for_status()
 
             # Parse the HTML using BeautifulSoup
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -76,6 +72,7 @@ def run_script(url, provider):
 
         # Show the cards in Streamlit
         st.markdown(csp + ' '.join(cards), unsafe_allow_html=True)
+
 
 #Define the Streamlit app
 def app():
