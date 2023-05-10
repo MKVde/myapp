@@ -16,6 +16,8 @@ def run_script(url, provider):
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
         }
         response = requests.get(url, headers=headers)
+        print(f"Status Code: {response.status_code}") # Print the status code
+        st.warning(f"Status Code: {response.status_code}") # Print the status code
         response.raise_for_status()
     except requests.exceptions.RequestException:
         st.warning("No URL or Invalid URL. Please enter a valid URL.")
