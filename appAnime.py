@@ -1,16 +1,12 @@
 import requests
-import cfscrape
 from bs4 import BeautifulSoup
 import streamlit as st
 
 def run_script(url, provider):
     # Check that URL is valid
     try:
-        scraper = cfscrape.create_scraper() # Use cfscrape to bypass Cloudflare
-        response = scraper.get(url)
+        response = requests.get(url)
         response.raise_for_status()
-        print(f"Status Code: {response.status_code}") # Print the status code
-        st.warning(f"Status Code: {response.status_code}") # Print the status code
     except requests.exceptions.RequestException:
         st.warning("No URL or Invalid URL. Please enter a valid URL.")
         return
@@ -26,19 +22,14 @@ def run_script(url, provider):
         # Extract anime name from URL
         anime_name = url.split('/')[-2].replace('-', ' ')
 
-        # Initialize the table with headers
-        st.write(f"## Episodes for {anime_name}")
-        st.write("")
-        st.write("| Episode Number | Download Link |")
-        st.write("| --- | --- |")
-
-        # Loop through each episode URL
+        # Loop through each episode URL and create a card for each
+        cards = []
         for episode_link in episode_links:
             episode_url = episode_link["href"]
 
             # Make a GET request to the episode page
             try:
-                response = scraper.get(episode_url)
+                response = requests.get(episode_url)
                 response.raise_for_status()
             except requests.exceptions.RequestException:
                 st.warning("Failed to retrieve episode data. Please check your internet connection and try again.")
@@ -54,12 +45,26 @@ def run_script(url, provider):
             if len(provider_links) >= 2:
                 download_link = provider_links[1]['href']
                 episode_num = episode_link.text.split(' ')[-1]
-                
-                # Add the row to the table
-                st.write(f"| {episode_num} | [{provider.capitalize()}]({download_link}) |")
 
+                # Create card for episode
+                card = f"""
+                    <div class="card">
+                        <div class="card-header">
+                            Episode {episode_num}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{anime_name}</h5>
+                            <p class="card-text">Download Link: <a href="{download_link}" target="_blank">{download_link}</a></p>
+                        </div>
+                    </div>
+                """
+                cards.append(card)
+
+        # Show the cards in Streamlit
+        st.markdown(' '.join(cards), unsafe_allow_html=True)
 
 # Create Streamlit UI
+st.set_page_config(page_title="Anime Downloader", page_icon="📺")
 st.title("Anime Downloader")
 
 # Get user input values
@@ -67,5 +72,5 @@ url = st.text_input("Enter URL:")
 provider = st.selectbox("Provider:", ["mega", "google", "mediafire"])
 
 # Run the script when the "Download" button is clicked
-if st.button("Run"):
+if st.button("Download Episodes"):
     run_script(url, provider)
