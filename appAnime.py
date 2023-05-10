@@ -6,9 +6,15 @@ import streamlit as st
 def run_script(url, provider):
     # Check that URL is valid
 
-    response = requests.get(url)
-
-
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        print(f"Status Code: {response.status_code}") # Print the status code
+        st.warning(f"Status Code: {response.status_code}") # Print the status code
+    except requests.exceptions.RequestException:
+        st.warning("No URL or Invalid URL. Please enter a valid URL.")
+        return
+    
     # Show loading spinner
     with st.spinner(text="Loading..."):
         # Use BeautifulSoup to parse the response HTML
